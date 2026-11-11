@@ -1,0 +1,35 @@
+name: 'Random Number Generator'
+description: 'Greets a user and generates a random number'
+ 
+# 1. Define the input the action expects to receive
+inputs:
+  user-name:
+    description: 'The name of the user to greet'
+    required: true
+    default: 'Developer'
+ 
+# 2. Define the output the action will pass back
+outputs:
+  generated-number:
+    description: 'The generated pseudo-random number'
+    # This maps the action's top-level output to a specific internal step's output
+    value: ${{ steps.rng-step.outputs.random-id }}
+ 
+runs:
+  using: 'composite' # Tells GitHub this is a composite action
+  steps:
+    - name: Greet User
+      shell: bash
+      run: |
+        echo "Hello, ${{ inputs.user-name }}!"
+ 
+    - name: Generate Random Number
+      id: rng-step # The ID must match the path used in the outputs block above
+      shell: bash
+      run: |
+        # Generate the random number using Bash's built-in variable
+        RAND_VAL=$RANDOM
+        echo "Internal step generated: $RAND_VAL"
+        # Write the value to the special GITHUB_OUTPUT file so it can be extracted
+        echo "random-id=$RAND_VAL" >> $GITHUB_OUTPUT
+        

@@ -1,1 +1,24 @@
+name: 2-Test Composite Action
 
+on:
+  workflow_dispatch: # Allows you to trigger this manually from the Actions tab
+
+jobs:
+  run-custom-action:
+  runs-on: ubuntu-latest
+  steps:
+    # Step 1: You MUST check out your repository first to use a local composite action
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # Step 2: Call your local composite action using its folder path
+    - name: Call Random Generator Action
+      id: custom_rng # Give this step an ID so you can reference its outputs
+      uses: ./.github/actions/random-generator
+      with:
+        user-name: 'Alice' # Passing the required input
+
+    # Step 3: Consume the output passed back from the composite action
+    - name: Use the returned random number
+      run: |
+        echo "The composite action successfully returned the number: ${{ steps.custom_rng.outputs. generated-number }}"

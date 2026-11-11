@@ -31,8 +31,10 @@ jobs:
 
       - name: Generate Value
         id: generator
-        run: echo "build_id=12345" >> $GITHUB_OUTPUT
+        run: echo "build_id=12345" >> "$GITHUB_OUTPUT"
 
       - name: Use Value
-        run: echo "build ID is ${{ steps.generator.outputs.build_id }}" >> $GITHUB_OUTPUT
-          
+        run: echo "build ID is ${{ steps.generator.outputs.build_id }}"
+
+
+

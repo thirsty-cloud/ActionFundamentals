@@ -24,3 +24,8 @@ jobs:
         run: |
           echo "The repository ${{ github.repository }} contains the following files:"
           tree
+      - name: Test Log Levels
+        run: |
+          echo "::warning file=app.js,line=10::This is a code warning."
+          echo "::error file=app.js,line=15::Critical syntax error found."
+          
